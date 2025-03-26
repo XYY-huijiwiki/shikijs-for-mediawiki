@@ -21,4 +21,4 @@ mw.loader.load(
 
 ## Limitations
 
-- **Performance impact** – Not highly efficient, so avoid loading it for all users.
+- Currently, all functions have been thoroughly tested only on [XYY HuijiWiki](https://xyy.huijiwiki.com).
