@@ -47,38 +47,35 @@ async function applyToCodeBlocks() {
       //     <component :is="vnode" />
       //     <style>...</style>
       // </div>
-      shadowRoot.innerHTML = (() => {
-        // outer html
-        let html = document.createElement("div");
-        html.className = `language-${lang}`;
-        // copy text btn
-        let btn = document.createElement("button");
-        btn.title = "Copy code";
-        btn.className = "copy";
-        btn.onclick = () => {
-          navigator.clipboard.writeText(code).then(() => {
-            console.log("Code copied to clipboard!");
-          });
-        };
-        html.appendChild(btn);
-        // lang tag
-        let span = document.createElement("span");
-        span.className = "lang";
-        span.innerText = lang;
-        html.appendChild(span);
-        // code block
-        let codeBlock = document.createElement("div");
-        codeBlock.innerHTML = highlighted;
-        html.appendChild(codeBlock);
-        // style tag
-        let style = document.createElement("style");
-        style.innerHTML = codeBlockCss;
-        html.appendChild(style);
-        // return outer html
-        return html.outerHTML;
-      })();
 
-      // Replace original element with shadow host
+      // Create container div
+      const container = document.createElement("div");
+      container.className = `language-${lang}`;
+
+      // Create and configure copy button
+      const copyBtn = document.createElement("button");
+      copyBtn.title = "Copy code";
+      copyBtn.className = "copy";
+      copyBtn.onclick = () => navigator.clipboard.writeText(code);
+
+      // Create language tag
+      const langTag = document.createElement("span");
+      langTag.className = "lang";
+      langTag.textContent = lang;
+
+      // Create highlighted code block
+      const codeBlock = document.createElement("div");
+      codeBlock.innerHTML = highlighted;
+
+      // Create styles
+      const styles = document.createElement("style");
+      styles.textContent = codeBlockCss;
+
+      // Build DOM structure
+      container.append(copyBtn, langTag, codeBlock, styles);
+      shadowRoot.appendChild(container); // Append directly to shadow root
+
+      // Replace original element
       element.replaceWith(host);
     } catch (error) {
       console.error("Error loading Shiki:", error);
