@@ -4,7 +4,7 @@ import codeBlockCss from "./code-block.css?raw";
 async function applyToCodeBlocks() {
   // Select all code blocks with both .mw-highlight and language class
   const codeBlocks = document.querySelectorAll<HTMLElement>(
-    '.mw-highlight[class*="mw-highlight-lang-"], .prettyprint'
+    '.mw-highlight[class*="mw-highlight-lang-"], pre.prettyprint'
   );
 
   codeBlocks.forEach(async (element) => {
