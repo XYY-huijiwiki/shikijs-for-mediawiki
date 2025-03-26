@@ -4,12 +4,10 @@ import codeBlockCss from "./code-block.css?raw";
 async function applyToCodeBlocks() {
   // Select all code blocks with both .mw-highlight and language class
   const codeBlocks = document.querySelectorAll<HTMLElement>(
-    '.mw-highlight[class*="mw-highlight-lang-"],.prettyprint'
+    '.mw-highlight[class*="mw-highlight-lang-"], .prettyprint'
   );
 
-  // Collect unique languages from all code blocks
-  const languages = new Set<string>();
-  codeBlocks.forEach((element) => {
+  codeBlocks.forEach(async (element) => {
     let lang: string;
     if (element.classList.contains("prettyprint")) {
       // Treat .prettyprint as wikitext
@@ -20,21 +18,9 @@ async function applyToCodeBlocks() {
       );
       lang = langClass?.split("-").pop() || "text";
     }
-    languages.add(lang);
-  });
 
-  // Fallback to text if no languages found
-  if (languages.size === 0) languages.add("text");
-
-  try {
-    // Process each code block
-    codeBlocks.forEach(async (originalElement) => {
-      // Get language and code content
-      const langClass = Array.from(originalElement.classList).find((c) =>
-        c.startsWith("mw-highlight-lang-")
-      );
-      const lang = langClass?.split("-").pop() || "javascript";
-      const code = originalElement.innerText;
+    try {
+      const code = element.innerText;
 
       // Create shadow host and root
       const host = document.createElement("div");
@@ -92,11 +78,11 @@ async function applyToCodeBlocks() {
       })();
 
       // Replace original element with shadow host
-      originalElement.replaceWith(host);
-    });
-  } catch (error) {
-    console.error("Error loading Shiki:", error);
-  }
+      element.replaceWith(host);
+    } catch (error) {
+      console.error("Error loading Shiki:", error);
+    }
+  });
 }
 
 export default applyToCodeBlocks;
