@@ -2,14 +2,16 @@
 
 > Bringing a modern code block experience to your wiki! ✨
 
-**Shikijs for MediaWiki** adds a sleek, modern code block design to your wiki, powered by [Shikijs](https://github.com/...).
+**Shikijs for MediaWiki** adds a sleek, modern code block design to your wiki, powered by [Shikijs](https://github.com/shikijs/shiki).
 
 ## How to Use
 
 If your wiki supports personal JavaScript, simply copy and paste the following code into your JavaScript page. And voilà! It’s as easy as that! 🎉
 
 ```js
-import("...");
+mw.loader.load(
+  "https://xyy-huijiwiki.github.io/shikijs-for-mediawiki/entry.js"
+);
 ```
 
 ## Features
