@@ -29,6 +29,7 @@
   padding: 0 24px;
   width: fit-content;
   min-width: 100%;
+  box-sizing: border-box;
 }
 div[class*="language-"] {
   border-radius: 8px;
