@@ -14,8 +14,14 @@ async function observeWikiBody() {
     applyToCodeBlocks();
   }, 300); // Adjust debounce delay as needed
 
-  const observer = new MutationObserver(() => {
-    debouncedApply();
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+        // Only process newly added nodes
+        debouncedApply();
+        break; // Exit loop after processing the first relevant mutation
+      }
+    }
   });
 
   observer.observe(wikiBody, { childList: true, subtree: true });
