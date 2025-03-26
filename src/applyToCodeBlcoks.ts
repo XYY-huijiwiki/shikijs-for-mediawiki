@@ -4,21 +4,27 @@ import codeBlockCss from "./code-block.css?raw";
 async function applyToCodeBlocks() {
   // Select all code blocks with both .mw-highlight and language class
   const codeBlocks = document.querySelectorAll<HTMLElement>(
-    '.mw-highlight[class*="mw-highlight-lang-"]'
+    '.mw-highlight[class*="mw-highlight-lang-"],.prettyprint'
   );
 
   // Collect unique languages from all code blocks
   const languages = new Set<string>();
   codeBlocks.forEach((element) => {
-    const langClass = Array.from(element.classList).find((c) =>
-      c.startsWith("mw-highlight-lang-")
-    );
-    const lang = langClass?.split("-").pop() || "javascript";
+    let lang: string;
+    if (element.classList.contains("prettyprint")) {
+      // Treat .prettyprint as wikitext
+      lang = "wikitext";
+    } else {
+      const langClass = Array.from(element.classList).find((c) =>
+        c.startsWith("mw-highlight-lang-")
+      );
+      lang = langClass?.split("-").pop() || "text";
+    }
     languages.add(lang);
   });
 
-  // Fallback to JavaScript if no languages found
-  if (languages.size === 0) languages.add("javascript");
+  // Fallback to text if no languages found
+  if (languages.size === 0) languages.add("text");
 
   try {
     // Process each code block
