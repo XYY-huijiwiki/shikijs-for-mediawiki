@@ -1,5 +1,6 @@
 import { codeToHtml } from "shiki";
 import codeBlockCss from "./code-block.css?raw";
+import getInnerText from "./utils/getInnerText";
 
 async function applyToCodeBlocks() {
   // Select all code blocks with both .mw-highlight and language class
@@ -20,7 +21,7 @@ async function applyToCodeBlocks() {
     }
 
     try {
-      const code = element.innerText;
+      const code = getInnerText(element);
 
       // Create shadow host and root
       const host = document.createElement("div");
