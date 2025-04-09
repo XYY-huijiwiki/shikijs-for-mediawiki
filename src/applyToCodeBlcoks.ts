@@ -11,8 +11,16 @@ async function applyToCodeBlocks() {
   codeBlocks.forEach(async (element) => {
     let lang: string;
     if (element.classList.contains("prettyprint")) {
-      // Treat .prettyprint as wikitext
-      lang = "wikitext";
+      // Check if it has a language class
+      const langClass = Array.from(element.classList).find((c) =>
+        c.startsWith("lang-")
+      );
+      if (langClass) {
+        lang = langClass.split("-").pop() || "text";
+      } else {
+        // Handle .prettyprint without .lang-XXX as wikitext
+        lang = "wikitext";
+      }
     } else {
       const langClass = Array.from(element.classList).find((c) =>
         c.startsWith("mw-highlight-lang-")
